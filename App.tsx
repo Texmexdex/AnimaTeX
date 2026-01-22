@@ -3,6 +3,7 @@ import { Play, Pause, Image as ImageIcon, RotateCcw } from 'lucide-react';
 import Stage from './components/Stage';
 import Timeline from './components/Timeline';
 import PropertyPanel from './components/PropertyPanel';
+import AnimatedLogo from './components/AnimatedLogo';
 import { AnimObject, Keyframe, ProjectState, ObjectState } from './types';
 import { DEFAULT_CANVAS_WIDTH, DEFAULT_CANVAS_HEIGHT, DEFAULT_FPS, INITIAL_OBJECT_STATE } from './constants';
 
@@ -489,12 +490,7 @@ const App: React.FC = () => {
         <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden">
             <div className="h-16 flex items-center justify-between px-6 bg-white/5 border-b border-white/10 backdrop-blur-md z-20 shadow-lg flex-shrink-0">
                  <div className="flex items-center gap-4">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-lg shadow-purple-500/20">
-                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                         </svg>
-                    </div>
+                    <AnimatedLogo size={40} className="rounded-xl shadow-lg shadow-purple-500/20" />
                     <h1 className="font-bold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 drop-shadow-md">
                         AnimaTeX
                     </h1>
