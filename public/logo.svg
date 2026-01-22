@@ -1,0 +1,57 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Black circle background -->
+  <circle cx="256" cy="256" r="256" fill="#000000"/>
+  
+  <!-- Animated kaleidoscope pattern -->
+  <g id="pattern">
+    <!-- Outer ring diamonds -->
+    <path d="M256 80 L280 120 L256 160 L232 120 Z" fill="white"/>
+    <path d="M336 116 L360 156 L336 196 L312 156 Z" fill="white"/>
+    <path d="M396 196 L420 236 L396 276 L372 236 Z" fill="white"/>
+    <path d="M432 296 L456 336 L432 376 L408 336 Z" fill="white"/>
+    <path d="M396 376 L420 416 L396 456 L372 416 Z" fill="white"/>
+    <path d="M336 396 L360 436 L336 476 L312 436 Z" fill="white"/>
+    <path d="M256 432 L280 472 L256 512 L232 472 Z" fill="white"/>
+    <path d="M176 396 L200 436 L176 476 L152 436 Z" fill="white"/>
+    <path d="M116 376 L140 416 L116 456 L92 416 Z" fill="white"/>
+    <path d="M80 296 L104 336 L80 376 L56 336 Z" fill="white"/>
+    <path d="M116 196 L140 236 L116 276 L92 236 Z" fill="white"/>
+    <path d="M176 116 L200 156 L176 196 L152 156 Z" fill="white"/>
+    
+    <!-- Middle ring diamonds -->
+    <path d="M256 140 L270 170 L256 200 L242 170 Z" fill="white"/>
+    <path d="M312 170 L326 200 L312 230 L298 200 Z" fill="white"/>
+    <path d="M342 230 L356 260 L342 290 L328 260 Z" fill="white"/>
+    <path d="M342 290 L356 320 L342 350 L328 320 Z" fill="white"/>
+    <path d="M312 350 L326 380 L312 410 L298 380 Z" fill="white"/>
+    <path d="M256 380 L270 410 L256 440 L242 410 Z" fill="white"/>
+    <path d="M200 350 L214 380 L200 410 L186 380 Z" fill="white"/>
+    <path d="M170 290 L184 320 L170 350 L156 320 Z" fill="white"/>
+    <path d="M170 230 L184 260 L170 290 L156 260 Z" fill="white"/>
+    <path d="M200 170 L214 200 L200 230 L186 200 Z" fill="white"/>
+    
+    <!-- Inner ring small diamonds -->
+    <path d="M256 200 L264 220 L256 240 L248 220 Z" fill="white"/>
+    <path d="M292 220 L300 240 L292 260 L284 240 Z" fill="white"/>
+    <path d="M308 260 L316 280 L308 300 L300 280 Z" fill="white"/>
+    <path d="M292 300 L300 320 L292 340 L284 320 Z" fill="white"/>
+    <path d="M256 320 L264 340 L256 360 L248 340 Z" fill="white"/>
+    <path d="M220 300 L228 320 L220 340 L212 320 Z" fill="white"/>
+    <path d="M204 260 L212 280 L204 300 L196 280 Z" fill="white"/>
+    <path d="M220 220 L228 240 L220 260 L212 240 Z" fill="white"/>
+    
+    <!-- Small triangular accents around outer edge -->
+    <path d="M256 40 L262 50 L250 50 Z" fill="white"/>
+    <path d="M350 90 L356 100 L344 100 Z" fill="white"/>
+    <path d="M422 180 L428 190 L416 190 Z" fill="white"/>
+    <path d="M472 280 L478 290 L466 290 Z" fill="white"/>
+    <path d="M422 380 L428 390 L416 390 Z" fill="white"/>
+    <path d="M350 450 L356 460 L344 460 Z" fill="white"/>
+    <path d="M256 500 L262 510 L250 510 Z" fill="white"/>
+    <path d="M162 450 L168 460 L156 460 Z" fill="white"/>
+    <path d="M90 380 L96 390 L84 390 Z" fill="white"/>
+    <path d="M40 280 L46 290 L34 290 Z" fill="white"/>
+    <path d="M90 180 L96 190 L84 190 Z" fill="white"/>
+    <path d="M162 90 L168 100 L156 100 Z" fill="white"/>
+  </g>
+</svg>

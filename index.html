@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AnimaTeX Studio - TeXmExDeX Type Tools</title>
+    
+    <!-- Animated Favicon -->
+    <link id="dynamic-favicon" rel="icon" href="/favicon/1.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/logo.gif" />
+    <meta name="theme-color" content="#0f0c29" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glass: "rgba(255, 255, 255, 0.1)",
+                        glassBorder: "rgba(255, 255, 255, 0.2)",
+                        darkGlass: "rgba(0, 0, 0, 0.6)",
+                    },
+                    backdropBlur: {
+                        xs: '2px',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+      body {
+        background-color: #0f0c29;
+        background-image: linear-gradient(315deg, #0f0c29 0%, #302b63 74%, #24243e 100%);
+        color: white;
+        overflow: hidden;
+        margin: 0;
+      }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.2);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.2);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.4);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/client": "https://esm.sh/react-dom@^19.2.3/client",
+    "react-dom": "https://esm.sh/react-dom@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "html2canvas": "https://esm.sh/html2canvas@^1.4.1",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+  
+  <!-- Animated Favicon Script -->
+  <script>
+    (function() {
+      const faviconTag = document.getElementById('dynamic-favicon');
+      const totalFrames = 62; // Total number of favicon frames
+      const frameDelay = 100; // Speed in ms (100ms = 10fps)
+      const folderPath = '/favicon/'; // Path to favicon images
+      let currentFrame = 1;
+
+      setInterval(() => {
+        // Update the href
+        faviconTag.href = `${folderPath}${currentFrame}.png`;
+        
+        // Increment frame, loop back to 1 if at end
+        currentFrame++;
+        if (currentFrame > totalFrames) {
+          currentFrame = 1;
+        }
+      }, frameDelay);
+    })();
+  </script>
+</body>
+</html>
