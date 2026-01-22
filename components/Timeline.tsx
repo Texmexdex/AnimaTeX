@@ -1,6 +1,8 @@
 import React from 'react';
-import { Plus, Copy, Trash, Film } from 'lucide-react';
+import { Plus, Copy, Trash, Film, Activity } from 'lucide-react';
 import { Keyframe } from '../types';
+
+// Auto-tween feature for frame interpolation
 
 interface TimelineProps {
   keyframes: Keyframe[];
