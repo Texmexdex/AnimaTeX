@@ -274,6 +274,48 @@ const App: React.FC = () => {
       if (selectedObjectId === id) setSelectedObjectId(null);
   };
 
+  // Auto-interpolate frames between current and target
+  const handleAutoInterpolate = (targetFrameIndex: number) => {
+      if (!selectedObjectId || targetFrameIndex <= currentFrameIndex) return;
+      
+      const startFrame = project.keyframes[currentFrameIndex];
+      const endFrame = project.keyframes[targetFrameIndex];
+      const startState = startFrame.objects[selectedObjectId];
+      const endState = endFrame.objects[selectedObjectId];
+      
+      if (!startState || !endState) return;
+      
+      const framesToInterpolate = targetFrameIndex - currentFrameIndex - 1;
+      
+      setProject(prev => {
+          const newKeyframes = [...prev.keyframes];
+          
+          for (let i = 1; i <= framesToInterpolate; i++) {
+              const t = i / (framesToInterpolate + 1);
+              const frameIndex = currentFrameIndex + i;
+              
+              newKeyframes[frameIndex] = {
+                  ...newKeyframes[frameIndex],
+                  objects: {
+                      ...newKeyframes[frameIndex].objects,
+                      [selectedObjectId]: {
+                          x: lerp(startState.x, endState.x, t),
+                          y: lerp(startState.y, endState.y, t),
+                          width: lerp(startState.width, endState.width, t),
+                          height: lerp(startState.height, endState.height, t),
+                          rotation: lerpAngle(startState.rotation, endState.rotation, t),
+                          opacity: lerp(startState.opacity, endState.opacity, t),
+                          zIndex: startState.zIndex,
+                          flipX: t < 0.5 ? startState.flipX : endState.flipX
+                      }
+                  }
+              };
+          }
+          
+          return { ...prev, keyframes: newKeyframes };
+      });
+  };
+
   // --- Playback Logic ---
 
   const togglePlay = () => {
@@ -506,6 +548,8 @@ const App: React.FC = () => {
                 onDuplicateFrame={handleDuplicateFrame}
                 onDeleteFrame={handleDeleteFrame}
                 isPlaying={isPlaying}
+                onAutoInterpolate={handleAutoInterpolate}
+                selectedObjectId={selectedObjectId}
             />
         </div>
 

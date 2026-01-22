@@ -10,6 +10,8 @@ interface TimelineProps {
   onDuplicateFrame: () => void;
   onDeleteFrame: () => void;
   isPlaying: boolean;
+  onAutoInterpolate: (targetFrameIndex: number) => void;
+  selectedObjectId: string | null;
 }
 
 const Timeline: React.FC<TimelineProps> = ({
@@ -19,8 +21,21 @@ const Timeline: React.FC<TimelineProps> = ({
   onAddFrame,
   onDuplicateFrame,
   onDeleteFrame,
-  isPlaying
+  isPlaying,
+  onAutoInterpolate,
+  selectedObjectId
 }) => {
+  const [interpolateMode, setInterpolateMode] = React.useState(false);
+
+  const handleFrameClick = (idx: number) => {
+    if (interpolateMode && selectedObjectId && idx > currentFrameIndex) {
+      onAutoInterpolate(idx);
+      setInterpolateMode(false);
+    } else {
+      onSelectFrame(idx);
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Toolbar */}
@@ -46,6 +61,26 @@ const Timeline: React.FC<TimelineProps> = ({
         >
           <Trash size={14} /> Delete
         </button>
+        
+        <div className="border-t-2 border-gray-300 pt-2 mt-1">
+          <button 
+            onClick={() => setInterpolateMode(!interpolateMode)}
+            disabled={isPlaying || !selectedObjectId}
+            className={`w-full px-3 py-2 transition-colors text-xs flex items-center justify-center gap-2 border-2 font-normal ${
+              interpolateMode 
+                ? 'bg-gray-900 text-white border-gray-900 hover:bg-gray-700' 
+                : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
+            } disabled:opacity-50`}
+            title="Auto-interpolate between frames"
+          >
+            <Activity size={14} /> {interpolateMode ? 'Click Target Frame' : 'Auto Tween'}
+          </button>
+          {interpolateMode && (
+            <p className="text-[10px] text-gray-600 mt-2 text-center font-normal">
+              Click a frame ahead to auto-fill
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Frames List */}
@@ -53,12 +88,14 @@ const Timeline: React.FC<TimelineProps> = ({
         {keyframes.map((frame, idx) => (
           <div
             key={frame.id}
-            onClick={() => onSelectFrame(idx)}
+            onClick={() => handleFrameClick(idx)}
             className={`
               w-full h-20 border-2 cursor-pointer transition-all duration-200 relative
               flex flex-col items-center justify-center text-sm font-normal
               ${idx === currentFrameIndex 
                 ? 'border-gray-900 bg-gray-100 shadow-sm' 
+                : interpolateMode && idx > currentFrameIndex && selectedObjectId
+                ? 'border-blue-400 bg-blue-50 hover:bg-blue-100'
                 : 'border-gray-300 bg-white hover:bg-gray-50 hover:border-gray-400'}
             `}
           >
