@@ -12,7 +12,7 @@ interface TimelineProps {
   onDuplicateFrame: () => void;
   onDeleteFrame: () => void;
   isPlaying: boolean;
-  onAutoInterpolate: (numFrames: number) => void;
+  onAutoInterpolate: (targetFrameIndex: number) => void;
   selectedObjectId: string | null;
 }
 
@@ -28,16 +28,22 @@ const Timeline: React.FC<TimelineProps> = ({
   selectedObjectId
 }) => {
   const [showTweenModal, setShowTweenModal] = React.useState(false);
-  const [tweenFrames, setTweenFrames] = React.useState(10);
+  const [tweenStartFrame, setTweenStartFrame] = React.useState(0);
 
   const handleStartTween = () => {
     if (!selectedObjectId) return;
+    // Capture the START frame
+    setTweenStartFrame(currentFrameIndex);
     setShowTweenModal(true);
   };
 
-  const handleTweenComplete = () => {
-    // Execute the tween with the number of frames
-    onAutoInterpolate(tweenFrames);
+  const handleSelectEndFrame = (targetIndex: number) => {
+    if (targetIndex <= tweenStartFrame) {
+      alert('Please select a frame after the start frame');
+      return;
+    }
+    // Execute the tween between start and target
+    onAutoInterpolate(targetIndex);
     setShowTweenModal(false);
   };
 
@@ -47,56 +53,54 @@ const Timeline: React.FC<TimelineProps> = ({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" id="timeline-panel">
-      {/* Tween Modal - Small, positioned at top, non-blocking */}
+      {/* Tween Modal - Frame Selection Mode */}
       {showTweenModal && (
         <>
-          <div className="fixed inset-0 bg-black/20 z-40" onClick={handleCancel}></div>
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-96" onClick={(e) => e.stopPropagation()}>
-            <div className="bg-white border-2 border-gray-900 p-4 shadow-2xl">
-              <h3 className="text-base font-normal mb-3" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween</h3>
-              <div className="bg-blue-50 border border-blue-300 p-3 mb-3 text-xs text-gray-700">
-                <p className="font-normal mb-2"><strong>How it works:</strong></p>
-                <p className="font-normal">1. Your object is at START position (Frame {currentFrameIndex + 1})</p>
-                <p className="font-normal">2. Move it to END position now</p>
-                <p className="font-normal">3. Enter frames & click Create</p>
-                <p className="font-normal">4. All frames auto-filled!</p>
+          <div className="fixed inset-0 bg-black/40 z-40" onClick={handleCancel}></div>
+          <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-96" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white border-2 border-gray-900 p-5 shadow-2xl">
+              <h3 className="text-base font-normal mb-3" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween Setup</h3>
+              
+              <div className="bg-blue-50 border-2 border-blue-400 p-4 mb-4 text-xs space-y-2">
+                <p className="font-normal text-gray-800">
+                  <strong>Start Frame: {tweenStartFrame + 1}</strong> (current position saved)
+                </p>
+                <p className="font-normal text-gray-700">
+                  Now click on a frame below to set as the END frame. All frames in between will be automatically filled.
+                </p>
               </div>
-              <div className="mb-3">
-                <label className="text-xs text-gray-600 font-normal block mb-1">Number of frames:</label>
-                <input
-                  type="number"
-                  min="2"
-                  max="100"
-                  value={tweenFrames}
-                  onChange={(e) => setTweenFrames(Math.max(2, parseInt(e.target.value) || 2))}
-                  className="w-full px-3 py-2 border-2 border-gray-300 text-center font-normal"
-                  autoFocus
-                />
-              </div>
-              <div className="bg-gray-100 border border-gray-300 p-2 mb-3 text-xs">
-                <div className="flex justify-between font-normal text-gray-700">
-                  <span>Start:</span>
-                  <span>Frame {currentFrameIndex + 1}</span>
+              
+              <div className="max-h-64 overflow-y-auto border-2 border-gray-300 p-2 mb-4 bg-gray-50">
+                <div className="space-y-1">
+                  {keyframes.map((frame, idx) => (
+                    <button
+                      key={frame.id}
+                      onClick={() => handleSelectEndFrame(idx)}
+                      disabled={idx <= tweenStartFrame}
+                      className={`
+                        w-full px-3 py-2 text-xs font-normal transition-colors text-left border-2
+                        ${idx === tweenStartFrame 
+                          ? 'bg-blue-100 border-blue-400 text-blue-900 cursor-not-allowed' 
+                          : idx < tweenStartFrame
+                          ? 'bg-gray-200 border-gray-300 text-gray-400 cursor-not-allowed'
+                          : 'bg-white border-gray-300 hover:bg-gray-100 hover:border-gray-900 text-gray-700'}
+                      `}
+                    >
+                      {idx === tweenStartFrame && '▶ '}
+                      Frame {idx + 1}
+                      {idx === tweenStartFrame && ' (START)'}
+                      {idx > tweenStartFrame && ` (+${idx - tweenStartFrame} frames)`}
+                    </button>
+                  ))}
                 </div>
-                <div className="flex justify-between font-normal text-gray-700">
-                  <span>End:</span>
-                  <span>Frame {currentFrameIndex + tweenFrames + 1}</span>
-                </div>
               </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={handleCancel}
-                  className="flex-1 px-3 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-xs"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleTweenComplete}
-                  className="flex-1 px-3 py-2 border-2 border-gray-900 bg-gray-900 hover:bg-gray-700 text-white font-normal text-xs"
-                >
-                  Create Tween
-                </button>
-              </div>
+              
+              <button
+                onClick={handleCancel}
+                className="w-full px-4 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-xs"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </>
@@ -136,8 +140,14 @@ const Timeline: React.FC<TimelineProps> = ({
             <Activity size={14} /> Auto Tween
           </button>
           {!selectedObjectId && !isPlaying && (
-            <p className="text-[10px] text-gray-600 mt-2 text-center font-normal">
-              Select an object first
+            <p className="text-[10px] text-gray-600 mt-2 text-center font-normal leading-relaxed">
+              <strong>How to use:</strong><br/>
+              1. Select an object<br/>
+              2. Position at START<br/>
+              3. Create/go to END frame<br/>
+              4. Position at END<br/>
+              5. Click Auto Tween<br/>
+              6. Select END frame
             </p>
           )}
         </div>
