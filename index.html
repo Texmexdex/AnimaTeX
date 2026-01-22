@@ -4,8 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AnimaTeX Studio - TeXmExDeX Type Tools</title>
-    <link rel="icon" href="/AnimaTeX/favicon.gif" type="image/gif" />
+    <link id="favicon" rel="icon" href="/AnimaTeX/fav/1.png" type="image/png" />
     <meta name="theme-color" content="#0f0c29" />
+    <script>
+      // Animated favicon
+      (function() {
+        const favicon = document.getElementById('favicon');
+        const totalFrames = 62;
+        const frameDelay = 100; // 100ms = 10fps
+        let currentFrame = 1;
+        
+        setInterval(() => {
+          currentFrame = currentFrame >= totalFrames ? 1 : currentFrame + 1;
+          favicon.href = `/AnimaTeX/fav/${currentFrame}.png`;
+        }, frameDelay);
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
     <script>
