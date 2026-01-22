@@ -487,8 +487,8 @@ const App: React.FC = () => {
 
   return (
     <div className="flex h-screen w-screen text-gray-900 overflow-hidden bg-[#f5f5f0]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
-        <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden">
-            <div className="h-16 flex items-center justify-between px-8 bg-[#f5f5f0] border-b border-gray-300 flex-shrink-0">
+        <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden border-r border-gray-300">
+            <div className="h-16 flex items-center justify-between px-8 bg-white border-b border-gray-300 flex-shrink-0">
                  <div className="flex items-center gap-6">
                     <AnimatedLogo size={56} className="" />
                     <h1 className="font-normal text-xl tracking-wide text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
@@ -498,7 +498,7 @@ const App: React.FC = () => {
                  </div>
 
                  <div className="flex items-center gap-4">
-                    <label className="flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-gray-200 text-gray-700 border border-gray-300 cursor-pointer transition-colors text-xs font-normal tracking-wide">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 cursor-pointer transition-colors text-xs font-normal tracking-wide">
                         <ImageIcon size={14} /> Import Image
                         <input type="file" accept="image/*" onChange={handleAddObject} className="hidden" />
                     </label>
@@ -508,14 +508,14 @@ const App: React.FC = () => {
                             setPlaybackTime(0); 
                             setCurrentFrameIndex(0); 
                         }}
-                        className="p-2 hover:bg-gray-200 border border-gray-300 transition-colors text-gray-600 hover:text-gray-900"
+                        className="p-2 hover:bg-gray-100 border border-gray-300 transition-colors text-gray-600 hover:text-gray-900 bg-white"
                         title="Reset Timeline"
                     >
                         <RotateCcw size={16} />
                     </button>
                     <button 
                         onClick={togglePlay}
-                        className="flex items-center gap-2 px-4 py-2 font-normal transition-colors text-xs tracking-wide border border-gray-300 bg-transparent hover:bg-gray-200 text-gray-700"
+                        className="flex items-center gap-2 px-4 py-2 font-normal transition-colors text-xs tracking-wide border border-gray-900 bg-gray-900 hover:bg-gray-700 text-white"
                     >
                         {isPlaying ? <Pause size={14} /> : <Play size={14} />}
                         {isPlaying ? 'Stop' : 'Play'}
@@ -523,8 +523,8 @@ const App: React.FC = () => {
                  </div>
             </div>
 
-            <div className="flex-1 overflow-auto flex items-center justify-center p-12 relative bg-[#f5f5f0]">
-                 <div className="relative border border-gray-300">
+            <div className="flex-1 overflow-auto flex items-center justify-center p-12 relative bg-[#fafaf8]">
+                 <div className="relative border-2 border-gray-400 shadow-sm">
                     <Stage 
                         width={project.width}
                         height={project.height}

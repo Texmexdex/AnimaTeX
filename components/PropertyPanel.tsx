@@ -52,9 +52,9 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
   return (
     <div 
       id="property-panel" 
-      className="w-80 bg-[#f5f5f0] border-l border-gray-300 h-full overflow-y-auto p-6 flex flex-col gap-2 flex-shrink-0"
+      className="w-80 bg-white border-l-2 border-gray-400 h-full overflow-y-auto p-6 flex flex-col gap-2 flex-shrink-0"
     >
-      <h2 className="text-base font-normal text-gray-900 mb-6 tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>
+      <h2 className="text-base font-normal text-gray-900 mb-6 tracking-wide pb-3 border-b border-gray-300" style={{ fontFamily: 'Georgia, serif' }}>
         Properties
       </h2>
 
@@ -99,17 +99,17 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 <div 
                     key={obj.id} 
                     className={`
-                        w-full flex items-center gap-2 px-2 py-2 text-xs transition-colors group border
+                        w-full flex items-center gap-2 px-2 py-2 text-xs transition-colors group border-2
                         ${selectedObjectId === obj.id 
-                            ? 'bg-gray-200 border-gray-400' 
-                            : 'bg-white border-gray-300 hover:bg-gray-100'}
+                            ? 'bg-gray-100 border-gray-900' 
+                            : 'bg-white border-gray-300 hover:bg-gray-50 hover:border-gray-400'}
                     `}
                 >
                     <button
                         onClick={() => onSelectObject(obj.id)}
                         className="flex-1 flex items-center gap-3 text-left overflow-hidden"
                     >
-                        <div className="w-6 h-6 bg-white p-0.5 border border-gray-300 flex-shrink-0">
+                        <div className="w-6 h-6 bg-white p-0.5 border-2 border-gray-300 flex-shrink-0">
                             <img src={obj.src} className="w-full h-full object-contain" alt="" />
                         </div>
                         <span className={`truncate flex-1 font-normal ${selectedObjectId === obj.id ? 'text-gray-900' : 'text-gray-600'}`}>{obj.name}</span>
@@ -137,7 +137,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 type="number" 
                 value={Math.round(selectedObjectState.x)} 
                 onChange={(e) => onUpdateObject({ x: Number(e.target.value) })}
-                className="w-full bg-white border border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
+                className="w-full bg-white border-2 border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
               />
             </div>
             <div>
@@ -146,7 +146,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 type="number" 
                 value={Math.round(selectedObjectState.y)} 
                 onChange={(e) => onUpdateObject({ y: Number(e.target.value) })}
-                className="w-full bg-white border border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
+                className="w-full bg-white border-2 border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
               />
             </div>
             <div>
@@ -155,7 +155,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 type="number" 
                 value={Math.round(selectedObjectState.rotation)} 
                 onChange={(e) => onUpdateObject({ rotation: Number(e.target.value) })}
-                className="w-full bg-white border border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
+                className="w-full bg-white border-2 border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
               />
             </div>
             <div>
@@ -167,7 +167,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 max="1"
                 value={selectedObjectState.opacity} 
                 onChange={(e) => onUpdateObject({ opacity: Number(e.target.value) })}
-                className="w-full bg-white border border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
+                className="w-full bg-white border-2 border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
               />
             </div>
              <div className="col-span-2">
@@ -176,7 +176,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 type="number" 
                 value={selectedObjectState.zIndex} 
                 onChange={(e) => onUpdateObject({ zIndex: Number(e.target.value) })}
-                className="w-full bg-white border border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
+                className="w-full bg-white border-2 border-gray-300 px-2 py-1 text-xs text-gray-900 focus:border-gray-500 outline-none font-normal"
               />
             </div>
             
@@ -185,10 +185,10 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
                 <button 
                     onClick={() => onUpdateObject({ flipX: !selectedObjectState.flipX })}
                     className={`
-                        w-full flex items-center justify-center gap-2 py-2 text-xs font-normal border transition-colors
+                        w-full flex items-center justify-center gap-2 py-2 text-xs font-normal border-2 transition-colors
                         ${selectedObjectState.flipX 
-                            ? 'bg-gray-200 border-gray-400 text-gray-900' 
-                            : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-100'}
+                            ? 'bg-gray-100 border-gray-900 text-gray-900' 
+                            : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400'}
                     `}
                 >
                     <FlipHorizontal size={12} /> {selectedObjectState.flipX ? 'Mirrored' : 'Mirror Object'}
@@ -197,7 +197,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
           </div>
         </Section>
       ) : (
-        <div className="p-4 border border-dashed border-gray-300 text-center text-xs text-gray-500 font-normal">
+        <div className="p-4 border-2 border-dashed border-gray-300 text-center text-xs text-gray-500 font-normal bg-[#fafaf8]">
             Select an object to edit properties
         </div>
       )}
@@ -207,7 +207,7 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
         <button
             onClick={onExport}
             disabled={isExporting}
-            className="w-full py-3 bg-gray-900 hover:bg-gray-700 text-sm font-normal transition-colors flex items-center justify-center gap-2 disabled:opacity-50 border border-gray-900 text-white"
+            className="w-full py-3 bg-gray-900 hover:bg-gray-700 text-sm font-normal transition-colors flex items-center justify-center gap-2 disabled:opacity-50 border-2 border-gray-900 text-white"
         >
              {isExporting ? (
                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
