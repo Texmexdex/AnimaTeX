@@ -275,40 +275,49 @@ const App: React.FC = () => {
   };
 
   // Auto-interpolate frames between current and target
-  const handleAutoInterpolate = (targetFrameIndex: number) => {
-      if (!selectedObjectId || targetFrameIndex <= currentFrameIndex) return;
+  const handleAutoInterpolate = (numFrames: number) => {
+      if (!selectedObjectId) return;
       
-      // Make sure target frame exists
-      if (targetFrameIndex >= project.keyframes.length) {
-          console.error('Target frame does not exist');
-          return;
-      }
-      
+      // Get the current state (this is the START position)
       const startFrame = project.keyframes[currentFrameIndex];
-      const endFrame = project.keyframes[targetFrameIndex];
-      
-      if (!startFrame || !endFrame) {
-          console.error('Start or end frame missing');
-          return;
-      }
-      
       const startState = startFrame.objects[selectedObjectId];
-      const endState = endFrame.objects[selectedObjectId];
       
-      if (!startState || !endState) {
-          console.error('Object not found in start or end frame');
+      if (!startState) {
+          console.error('Object not found in current frame');
           return;
       }
       
-      const framesToInterpolate = targetFrameIndex - currentFrameIndex - 1;
+      // The END state is the current state of the object (what user just positioned)
+      const endState = { ...startState };
       
-      if (framesToInterpolate < 1) return;
+      // Calculate target frame index
+      const targetFrameIndex = currentFrameIndex + numFrames;
       
       setProject(prev => {
           const newKeyframes = [...prev.keyframes];
           
-          for (let i = 1; i <= framesToInterpolate; i++) {
-              const t = i / (framesToInterpolate + 1);
+          // Ensure we have enough frames
+          while (newKeyframes.length <= targetFrameIndex) {
+              const lastFrame = newKeyframes[newKeyframes.length - 1];
+              newKeyframes.push({
+                  id: `frame-${Date.now()}-${newKeyframes.length}`,
+                  index: newKeyframes.length,
+                  objects: JSON.parse(JSON.stringify(lastFrame.objects))
+              });
+          }
+          
+          // Set the end frame to current state
+          newKeyframes[targetFrameIndex] = {
+              ...newKeyframes[targetFrameIndex],
+              objects: {
+                  ...newKeyframes[targetFrameIndex].objects,
+                  [selectedObjectId]: endState
+              }
+          };
+          
+          // Interpolate all frames in between
+          for (let i = 1; i < numFrames; i++) {
+              const t = i / numFrames;
               const frameIndex = currentFrameIndex + i;
               
               newKeyframes[frameIndex] = {

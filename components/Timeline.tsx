@@ -12,7 +12,7 @@ interface TimelineProps {
   onDuplicateFrame: () => void;
   onDeleteFrame: () => void;
   isPlaying: boolean;
-  onAutoInterpolate: (targetFrameIndex: number) => void;
+  onAutoInterpolate: (numFrames: number) => void;
   selectedObjectId: string | null;
 }
 
@@ -36,22 +36,9 @@ const Timeline: React.FC<TimelineProps> = ({
   };
 
   const handleTweenComplete = () => {
-    // First, ensure we have enough frames
-    const targetFrameIndex = currentFrameIndex + tweenFrames;
-    const framesToAdd = targetFrameIndex - (keyframes.length - 1);
-    
-    // Add frames if needed
-    if (framesToAdd > 0) {
-      for (let i = 0; i < framesToAdd; i++) {
-        onAddFrame();
-      }
-    }
-    
-    // Wait a tick for frames to be added, then execute tween
-    setTimeout(() => {
-      onAutoInterpolate(targetFrameIndex);
-      setShowTweenModal(false);
-    }, 100);
+    // Execute the tween with the number of frames
+    onAutoInterpolate(tweenFrames);
+    setShowTweenModal(false);
   };
 
   const handleCancel = () => {
@@ -68,12 +55,11 @@ const Timeline: React.FC<TimelineProps> = ({
             <div className="bg-white border-2 border-gray-900 p-4 shadow-2xl">
               <h3 className="text-base font-normal mb-3" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween</h3>
               <div className="bg-blue-50 border border-blue-300 p-3 mb-3 text-xs text-gray-700">
-                <p className="font-normal mb-2"><strong>Instructions:</strong></p>
-                <p className="font-normal">1. Enter number of frames below</p>
-                <p className="font-normal">2. Close this (click outside or Cancel)</p>
-                <p className="font-normal">3. Move object to end position</p>
-                <p className="font-normal">4. Click "Auto Tween" again</p>
-                <p className="font-normal">5. Click "Create Tween"</p>
+                <p className="font-normal mb-2"><strong>How it works:</strong></p>
+                <p className="font-normal">1. Your object is at START position (Frame {currentFrameIndex + 1})</p>
+                <p className="font-normal">2. Move it to END position now</p>
+                <p className="font-normal">3. Enter frames & click Create</p>
+                <p className="font-normal">4. All frames auto-filled!</p>
               </div>
               <div className="mb-3">
                 <label className="text-xs text-gray-600 font-normal block mb-1">Number of frames:</label>
