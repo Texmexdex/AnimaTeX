@@ -3,7 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: './', // Use relative paths for GitHub Pages
+  base: '/AnimaTeX/', // GitHub Pages base path
   publicDir: 'public', // Ensure public folder is copied
   server: {
     port: 3000,
