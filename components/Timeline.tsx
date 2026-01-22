@@ -22,30 +22,30 @@ const Timeline: React.FC<TimelineProps> = ({
   isPlaying
 }) => {
   return (
-    <div id="timeline-panel" className="w-full h-32 bg-black/40 backdrop-blur-md border-t border-white/10 flex flex-col">
+    <div id="timeline-panel" className="w-full h-32 bg-[#2a2a2a] border-t border-gray-700 flex flex-col">
       {/* Toolbar */}
-      <div className="h-10 flex items-center px-4 space-x-2 border-b border-white/5 bg-white/5">
-        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mr-4 flex items-center gap-2">
-            <Film size={14} /> Timeline
+      <div className="h-10 flex items-center px-4 space-x-2 border-b border-gray-700 bg-gray-800">
+        <span className="text-xs font-medium text-gray-400 tracking-widest mr-4 flex items-center gap-2">
+            <Film size={14} /> TIMELINE
         </span>
         <button 
           onClick={onAddFrame}
           disabled={isPlaying}
-          className="p-1.5 rounded hover:bg-white/10 text-gray-300 hover:text-white disabled:opacity-50 transition-colors text-xs flex items-center gap-1"
+          className="p-1.5 hover:bg-gray-700 text-gray-300 hover:text-white disabled:opacity-50 transition-colors text-xs flex items-center gap-1 border border-gray-600"
         >
           <Plus size={14} /> New
         </button>
         <button 
           onClick={onDuplicateFrame}
           disabled={isPlaying}
-          className="p-1.5 rounded hover:bg-white/10 text-gray-300 hover:text-white disabled:opacity-50 transition-colors text-xs flex items-center gap-1"
+          className="p-1.5 hover:bg-gray-700 text-gray-300 hover:text-white disabled:opacity-50 transition-colors text-xs flex items-center gap-1 border border-gray-600"
         >
           <Copy size={14} /> Duplicate
         </button>
         <button 
           onClick={onDeleteFrame}
           disabled={isPlaying || keyframes.length <= 1}
-          className="p-1.5 rounded hover:bg-red-500/20 text-red-400 hover:text-red-200 disabled:opacity-50 transition-colors text-xs flex items-center gap-1"
+          className="p-1.5 hover:bg-red-900/20 text-red-400 hover:text-red-200 disabled:opacity-50 transition-colors text-xs flex items-center gap-1 border border-gray-600"
         >
           <Trash size={14} /> Delete
         </button>
@@ -58,17 +58,17 @@ const Timeline: React.FC<TimelineProps> = ({
             key={frame.id}
             onClick={() => onSelectFrame(idx)}
             className={`
-              flex-shrink-0 w-20 h-16 rounded-md border cursor-pointer transition-all duration-200 relative group
+              flex-shrink-0 w-20 h-16 border cursor-pointer transition-all duration-200 relative group
               flex items-center justify-center text-sm font-mono
               ${idx === currentFrameIndex 
-                ? 'border-blue-500 bg-blue-500/20 scale-105 shadow-lg shadow-blue-500/20' 
-                : 'border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/30'}
+                ? 'border-gray-400 bg-gray-700' 
+                : 'border-gray-600 bg-gray-800 hover:bg-gray-700 hover:border-gray-500'}
             `}
           >
-            <span className="opacity-50">F{idx + 1}</span>
+            <span className="opacity-50 text-gray-400">F{idx + 1}</span>
             {/* Active Indicator */}
             {idx === currentFrameIndex && (
-                <div className="absolute -bottom-1 w-1 h-1 bg-blue-400 rounded-full shadow-[0_0_5px_rgba(59,130,246,1)]" />
+                <div className="absolute -bottom-1 w-1 h-1 bg-gray-400 rounded-full" />
             )}
           </div>
         ))}
@@ -76,7 +76,7 @@ const Timeline: React.FC<TimelineProps> = ({
         {/* Quick Add Button at End */}
         <button 
             onClick={onAddFrame}
-            className="flex-shrink-0 w-8 h-16 rounded-md border border-dashed border-white/10 hover:border-white/30 flex items-center justify-center text-white/20 hover:text-white/50 transition-colors"
+            className="flex-shrink-0 w-8 h-16 border border-dashed border-gray-600 hover:border-gray-500 flex items-center justify-center text-gray-600 hover:text-gray-400 transition-colors"
         >
             <Plus size={16} />
         </button>

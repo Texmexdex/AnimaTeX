@@ -486,51 +486,51 @@ const App: React.FC = () => {
   
 
   return (
-    <div className="flex h-screen w-screen text-white font-sans overflow-hidden bg-[#0f0c29]">
+    <div className="flex h-screen w-screen text-gray-100 overflow-hidden bg-[#1a1a1a]" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
         <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden">
-            <div className="h-16 flex items-center justify-between px-6 bg-white/5 border-b border-white/10 backdrop-blur-md z-20 shadow-lg flex-shrink-0">
+            <div className="h-14 flex items-center justify-between px-6 bg-[#2a2a2a] border-b border-gray-700 flex-shrink-0">
                  <div className="flex items-center gap-4">
-                    <AnimatedLogo size={40} className="rounded-xl shadow-lg shadow-purple-500/20" />
-                    <h1 className="font-bold text-2xl tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400 drop-shadow-md">
+                    <AnimatedLogo size={32} className="" />
+                    <h1 className="font-semibold text-xl tracking-tight text-gray-100">
                         AnimaTeX
                     </h1>
-                    <span className="text-xs text-white/50 font-medium tracking-wide">TeXmExDeX Type Tools</span>
-                    <div className="h-8 w-px bg-white/10 mx-4" />
-                    <label className="flex items-center gap-2 px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-200 rounded-lg cursor-pointer transition-all hover:scale-105 text-sm font-bold uppercase tracking-wide border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.2)]">
-                        <ImageIcon size={16} /> Import Image
+                    <span className="text-xs text-gray-500 font-normal tracking-wide">TeXmExDeX Type Tools</span>
+                    <div className="h-6 w-px bg-gray-700 mx-2" />
+                    <label className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-600 cursor-pointer transition-colors text-xs font-medium tracking-wide">
+                        <ImageIcon size={14} /> Import Image
                         <input type="file" accept="image/*" onChange={handleAddObject} className="hidden" />
                     </label>
                  </div>
 
-                 <div className="flex items-center gap-3">
+                 <div className="flex items-center gap-2">
                     <button 
                         onClick={() => { 
                             setIsPlaying(false); 
                             setPlaybackTime(0); 
                             setCurrentFrameIndex(0); 
                         }}
-                        className="p-3 hover:bg-white/10 rounded-full transition-colors text-white/70 hover:text-white"
+                        className="p-2 hover:bg-gray-700 border border-gray-600 transition-colors text-gray-400 hover:text-gray-200"
                         title="Reset Timeline"
                     >
-                        <RotateCcw size={18} />
+                        <RotateCcw size={16} />
                     </button>
                     <button 
                         onClick={togglePlay}
                         className={`
-                            flex items-center gap-3 px-8 py-2.5 rounded-full font-bold shadow-lg transition-all hover:scale-105 active:scale-95
+                            flex items-center gap-2 px-4 py-1.5 font-medium transition-colors text-xs tracking-wide border
                             ${isPlaying 
-                                ? 'bg-gradient-to-r from-red-500 to-pink-600 text-white shadow-red-500/30 border border-white/10' 
-                                : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-emerald-500/30 border border-white/10'}
+                                ? 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700' 
+                                : 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700'}
                         `}
                     >
-                        {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" />}
+                        {isPlaying ? <Pause size={14} /> : <Play size={14} />}
                         {isPlaying ? 'STOP' : 'PLAY'}
                     </button>
                  </div>
             </div>
 
-            <div className="flex-1 overflow-auto flex items-center justify-center p-8 relative">
-                 <div className="shadow-2xl relative">
+            <div className="flex-1 overflow-auto flex items-center justify-center p-8 relative bg-[#1a1a1a]">
+                 <div className="relative border border-gray-700">
                     <Stage 
                         width={project.width}
                         height={project.height}
