@@ -29,102 +29,91 @@ const Timeline: React.FC<TimelineProps> = ({
 }) => {
   const [showTweenModal, setShowTweenModal] = React.useState(false);
   const [tweenFrames, setTweenFrames] = React.useState(10);
-  const [tweenStep, setTweenStep] = React.useState<'setup' | 'position'>('setup');
 
   const handleStartTween = () => {
     if (!selectedObjectId) return;
     setShowTweenModal(true);
-    setTweenStep('setup');
-  };
-
-  const handleSetupComplete = () => {
-    // Add the frames needed
-    const framesToAdd = tweenFrames - (keyframes.length - currentFrameIndex - 1);
-    for (let i = 0; i < framesToAdd; i++) {
-      onAddFrame();
-    }
-    setTweenStep('position');
   };
 
   const handleTweenComplete = () => {
-    const targetFrame = currentFrameIndex + tweenFrames;
-    onAutoInterpolate(targetFrame);
-    setShowTweenModal(false);
-    setTweenStep('setup');
+    // First, ensure we have enough frames
+    const targetFrameIndex = currentFrameIndex + tweenFrames;
+    const framesToAdd = targetFrameIndex - (keyframes.length - 1);
+    
+    // Add frames if needed
+    if (framesToAdd > 0) {
+      for (let i = 0; i < framesToAdd; i++) {
+        onAddFrame();
+      }
+    }
+    
+    // Wait a tick for frames to be added, then execute tween
+    setTimeout(() => {
+      onAutoInterpolate(targetFrameIndex);
+      setShowTweenModal(false);
+    }, 100);
   };
 
   const handleCancel = () => {
     setShowTweenModal(false);
-    setTweenStep('setup');
   };
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" id="timeline-panel">
-      {/* Tween Modal */}
+      {/* Tween Modal - Small, positioned at top, non-blocking */}
       {showTweenModal && (
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-50" onClick={handleCancel}>
-          <div className="bg-white border-2 border-gray-900 p-6 max-w-sm w-full mx-4" onClick={(e) => e.stopPropagation()}>
-            {tweenStep === 'setup' ? (
-              <>
-                <h3 className="text-lg font-normal mb-4" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween Setup</h3>
-                <p className="text-sm text-gray-700 mb-4 font-normal">
-                  How many frames should the animation take?
-                </p>
+        <>
+          <div className="fixed inset-0 bg-black/20 z-40" onClick={handleCancel}></div>
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-96" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white border-2 border-gray-900 p-4 shadow-2xl">
+              <h3 className="text-base font-normal mb-3" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween</h3>
+              <div className="bg-blue-50 border border-blue-300 p-3 mb-3 text-xs text-gray-700">
+                <p className="font-normal mb-2"><strong>Instructions:</strong></p>
+                <p className="font-normal">1. Enter number of frames below</p>
+                <p className="font-normal">2. Close this (click outside or Cancel)</p>
+                <p className="font-normal">3. Move object to end position</p>
+                <p className="font-normal">4. Click "Auto Tween" again</p>
+                <p className="font-normal">5. Click "Create Tween"</p>
+              </div>
+              <div className="mb-3">
+                <label className="text-xs text-gray-600 font-normal block mb-1">Number of frames:</label>
                 <input
                   type="number"
                   min="2"
                   max="100"
                   value={tweenFrames}
                   onChange={(e) => setTweenFrames(Math.max(2, parseInt(e.target.value) || 2))}
-                  className="w-full px-3 py-2 border-2 border-gray-300 text-lg text-center font-normal mb-4"
+                  className="w-full px-3 py-2 border-2 border-gray-300 text-center font-normal"
                   autoFocus
                 />
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleCancel}
-                    className="flex-1 px-4 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSetupComplete}
-                    className="flex-1 px-4 py-2 border-2 border-gray-900 bg-gray-900 hover:bg-gray-700 text-white font-normal text-sm"
-                  >
-                    Next
-                  </button>
+              </div>
+              <div className="bg-gray-100 border border-gray-300 p-2 mb-3 text-xs">
+                <div className="flex justify-between font-normal text-gray-700">
+                  <span>Start:</span>
+                  <span>Frame {currentFrameIndex + 1}</span>
                 </div>
-              </>
-            ) : (
-              <>
-                <h3 className="text-lg font-normal mb-4" style={{ fontFamily: 'Georgia, serif' }}>Position Your Object</h3>
-                <p className="text-sm text-gray-700 mb-4 font-normal">
-                  Move your object to the final position on the canvas, then click "Create Tween" to automatically fill all {tweenFrames} frames.
-                </p>
-                <div className="bg-gray-100 border-2 border-gray-300 p-3 mb-4">
-                  <p className="text-xs text-gray-600 font-normal">
-                    <strong>Current Frame:</strong> {currentFrameIndex + 1}<br/>
-                    <strong>Target Frame:</strong> {currentFrameIndex + tweenFrames + 1}<br/>
-                    <strong>Frames to Fill:</strong> {tweenFrames}
-                  </p>
+                <div className="flex justify-between font-normal text-gray-700">
+                  <span>End:</span>
+                  <span>Frame {currentFrameIndex + tweenFrames + 1}</span>
                 </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleCancel}
-                    className="flex-1 px-4 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-sm"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleTweenComplete}
-                    className="flex-1 px-4 py-2 border-2 border-gray-900 bg-gray-900 hover:bg-gray-700 text-white font-normal text-sm"
-                  >
-                    Create Tween
-                  </button>
-                </div>
-              </>
-            )}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCancel}
+                  className="flex-1 px-3 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleTweenComplete}
+                  className="flex-1 px-3 py-2 border-2 border-gray-900 bg-gray-900 hover:bg-gray-700 text-white font-normal text-xs"
+                >
+                  Create Tween
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Toolbar */}

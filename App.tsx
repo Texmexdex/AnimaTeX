@@ -278,14 +278,31 @@ const App: React.FC = () => {
   const handleAutoInterpolate = (targetFrameIndex: number) => {
       if (!selectedObjectId || targetFrameIndex <= currentFrameIndex) return;
       
+      // Make sure target frame exists
+      if (targetFrameIndex >= project.keyframes.length) {
+          console.error('Target frame does not exist');
+          return;
+      }
+      
       const startFrame = project.keyframes[currentFrameIndex];
       const endFrame = project.keyframes[targetFrameIndex];
+      
+      if (!startFrame || !endFrame) {
+          console.error('Start or end frame missing');
+          return;
+      }
+      
       const startState = startFrame.objects[selectedObjectId];
       const endState = endFrame.objects[selectedObjectId];
       
-      if (!startState || !endState) return;
+      if (!startState || !endState) {
+          console.error('Object not found in start or end frame');
+          return;
+      }
       
       const framesToInterpolate = targetFrameIndex - currentFrameIndex - 1;
+      
+      if (framesToInterpolate < 1) return;
       
       setProject(prev => {
           const newKeyframes = [...prev.keyframes];
