@@ -146,6 +146,7 @@ const Stage: React.FC<StageProps> = ({
       const timelinePanel = document.getElementById('timeline-panel');
       const stage = document.getElementById('anim-stage');
       
+      // Don't deselect if clicking on timeline or property panel
       if (
           stage && !stage.contains(target) &&
           !propertyPanel?.contains(target) &&

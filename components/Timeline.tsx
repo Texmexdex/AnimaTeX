@@ -39,7 +39,7 @@ const Timeline: React.FC<TimelineProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
+    <div className="flex-1 flex flex-col overflow-hidden" id="timeline-panel">
       {/* Toolbar */}
       <div className="flex flex-col gap-2 p-3 border-b-2 border-gray-400 bg-[#fafaf8]">
         <button 
@@ -77,7 +77,12 @@ const Timeline: React.FC<TimelineProps> = ({
           >
             <Activity size={14} /> {interpolateMode ? 'Click Target Frame' : 'Auto Tween'}
           </button>
-          {interpolateMode && (
+          {!selectedObjectId && !isPlaying && (
+            <p className="text-[10px] text-gray-600 mt-2 text-center font-normal">
+              Select an object first
+            </p>
+          )}
+          {interpolateMode && selectedObjectId && (
             <p className="text-[10px] text-gray-600 mt-2 text-center font-normal">
               Click a frame ahead to auto-fill
             </p>
