@@ -486,51 +486,45 @@ const App: React.FC = () => {
   
 
   return (
-    <div className="flex h-screen w-screen text-gray-100 overflow-hidden bg-[#1a1a1a]" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+    <div className="flex h-screen w-screen text-gray-900 overflow-hidden bg-[#f5f5f0]" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}>
         <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden">
-            <div className="h-14 flex items-center justify-between px-6 bg-[#2a2a2a] border-b border-gray-700 flex-shrink-0">
-                 <div className="flex items-center gap-4">
-                    <AnimatedLogo size={32} className="" />
-                    <h1 className="font-semibold text-xl tracking-tight text-gray-100">
+            <div className="h-16 flex items-center justify-between px-8 bg-[#f5f5f0] border-b border-gray-300 flex-shrink-0">
+                 <div className="flex items-center gap-6">
+                    <AnimatedLogo size={28} className="" />
+                    <h1 className="font-normal text-xl tracking-wide text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
                         AnimaTeX
                     </h1>
                     <span className="text-xs text-gray-500 font-normal tracking-wide">TeXmExDeX Type Tools</span>
-                    <div className="h-6 w-px bg-gray-700 mx-2" />
-                    <label className="flex items-center gap-2 px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-600 cursor-pointer transition-colors text-xs font-medium tracking-wide">
+                 </div>
+
+                 <div className="flex items-center gap-4">
+                    <label className="flex items-center gap-2 px-4 py-2 bg-transparent hover:bg-gray-200 text-gray-700 border border-gray-300 cursor-pointer transition-colors text-xs font-normal tracking-wide">
                         <ImageIcon size={14} /> Import Image
                         <input type="file" accept="image/*" onChange={handleAddObject} className="hidden" />
                     </label>
-                 </div>
-
-                 <div className="flex items-center gap-2">
                     <button 
                         onClick={() => { 
                             setIsPlaying(false); 
                             setPlaybackTime(0); 
                             setCurrentFrameIndex(0); 
                         }}
-                        className="p-2 hover:bg-gray-700 border border-gray-600 transition-colors text-gray-400 hover:text-gray-200"
+                        className="p-2 hover:bg-gray-200 border border-gray-300 transition-colors text-gray-600 hover:text-gray-900"
                         title="Reset Timeline"
                     >
                         <RotateCcw size={16} />
                     </button>
                     <button 
                         onClick={togglePlay}
-                        className={`
-                            flex items-center gap-2 px-4 py-1.5 font-medium transition-colors text-xs tracking-wide border
-                            ${isPlaying 
-                                ? 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700' 
-                                : 'bg-gray-800 text-gray-200 border-gray-600 hover:bg-gray-700'}
-                        `}
+                        className="flex items-center gap-2 px-4 py-2 font-normal transition-colors text-xs tracking-wide border border-gray-300 bg-transparent hover:bg-gray-200 text-gray-700"
                     >
                         {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                        {isPlaying ? 'STOP' : 'PLAY'}
+                        {isPlaying ? 'Stop' : 'Play'}
                     </button>
                  </div>
             </div>
 
-            <div className="flex-1 overflow-auto flex items-center justify-center p-8 relative bg-[#1a1a1a]">
-                 <div className="relative border border-gray-700">
+            <div className="flex-1 overflow-auto flex items-center justify-center p-12 relative bg-[#f5f5f0]">
+                 <div className="relative border border-gray-300">
                     <Stage 
                         width={project.width}
                         height={project.height}

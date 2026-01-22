@@ -225,7 +225,7 @@ const Stage: React.FC<StageProps> = ({
     <div 
       className={`
         relative
-        ${isExporting ? '' : 'bg-gray-900 border border-gray-700'}
+        ${isExporting ? '' : 'bg-white border border-gray-300'}
       `}
       style={{ width, height }}
       ref={containerRef}
@@ -234,10 +234,10 @@ const Stage: React.FC<StageProps> = ({
       {/* Grid Background */}
       {!isExporting && (
           <div 
-            className="absolute inset-0 opacity-10 pointer-events-none" 
+            className="absolute inset-0 opacity-[0.03] pointer-events-none" 
             style={{ 
-                backgroundImage: 'linear-gradient(#666 1px, transparent 1px), linear-gradient(90deg, #666 1px, transparent 1px)', 
-                backgroundSize: '40px 40px' 
+                backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', 
+                backgroundSize: '20px 20px' 
             }}
           />
       )}
@@ -272,9 +272,9 @@ const Stage: React.FC<StageProps> = ({
             
             {/* Selection Controls */}
             {isSelected && !isPlaying && !isExporting && (
-              <div className="absolute inset-0 border-2 border-gray-400">
+              <div className="absolute inset-0 border border-gray-900">
                  <div 
-                    className="absolute -bottom-3 -right-3 w-6 h-6 bg-gray-600 flex items-center justify-center cursor-se-resize hover:scale-110 transition-transform pointer-events-auto"
+                    className="absolute -bottom-3 -right-3 w-6 h-6 bg-gray-900 flex items-center justify-center cursor-se-resize hover:bg-gray-700 transition-colors pointer-events-auto"
                     style={{ transform: `scaleX(${state.flipX ? -1 : 1})` }}
                     onMouseDown={(e) => handleToolMouseDown(e, obj.id, 'scale')}
                     title="Scale"
@@ -282,7 +282,7 @@ const Stage: React.FC<StageProps> = ({
                     <Maximize size={12} color="white" />
                  </div>
                  <div 
-                    className="absolute -top-8 left-1/2 -translate-x-1/2 w-6 h-6 bg-gray-600 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform pointer-events-auto"
+                    className="absolute -top-8 left-1/2 -translate-x-1/2 w-6 h-6 bg-gray-900 flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors pointer-events-auto"
                     style={{ transform: `scaleX(${state.flipX ? -1 : 1})` }}
                     onMouseDown={(e) => handleToolMouseDown(e, obj.id, 'rotate')}
                     title="Rotate"
@@ -290,7 +290,7 @@ const Stage: React.FC<StageProps> = ({
                     <RotateCw size={12} color="white" />
                  </div>
                  <div 
-                    className="absolute -top-3 -right-3 w-6 h-6 bg-red-600 flex items-center justify-center cursor-pointer hover:scale-110 transition-transform pointer-events-auto"
+                    className="absolute -top-3 -right-3 w-6 h-6 bg-gray-900 flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors pointer-events-auto"
                     style={{ transform: `scaleX(${state.flipX ? -1 : 1})` }}
                     onClick={(e) => { e.stopPropagation(); onDeleteObject(obj.id); }}
                     title="Remove from Frame"
