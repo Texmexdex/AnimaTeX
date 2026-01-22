@@ -490,7 +490,7 @@ const App: React.FC = () => {
         <div className="flex-1 flex flex-col relative z-10 min-w-0 overflow-hidden">
             <div className="h-16 flex items-center justify-between px-8 bg-[#f5f5f0] border-b border-gray-300 flex-shrink-0">
                  <div className="flex items-center gap-6">
-                    <AnimatedLogo size={28} className="" />
+                    <AnimatedLogo size={56} className="" />
                     <h1 className="font-normal text-xl tracking-wide text-gray-900" style={{ fontFamily: 'Georgia, serif' }}>
                         AnimaTeX
                     </h1>

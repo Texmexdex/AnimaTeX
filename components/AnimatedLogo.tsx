@@ -6,7 +6,7 @@ interface AnimatedLogoProps {
 }
 
 const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ 
-  size = 40,
+  size = 64,
   className = '' 
 }) => {
   return (
@@ -15,10 +15,10 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
       style={{ width: size, height: size }}
     >
       <img
-        src={`${import.meta.env.BASE_URL}animated-logo.gif`}
+        src={`${import.meta.env.BASE_URL}logo-animated.gif`}
         alt="AnimaTeX Logo"
         className="w-full h-full object-contain"
-        style={{ imageRendering: 'crisp-edges' }}
+        style={{ imageRendering: 'auto' }}
       />
     </div>
   );
