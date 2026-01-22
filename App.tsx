@@ -274,32 +274,51 @@ const App: React.FC = () => {
       if (selectedObjectId === id) setSelectedObjectId(null);
   };
 
-  // Auto-interpolate frames between current and target
-  const handleAutoInterpolate = (targetFrameIndex: number) => {
+  // Auto-interpolate frames with specified end state
+  const handleAutoInterpolate = (numFrames: number, endState: { x: number; y: number; rotation: number }) => {
       if (!selectedObjectId) return;
-      if (targetFrameIndex <= currentFrameIndex) {
-          alert('Target frame must be after current frame');
-          return;
-      }
       
       // Get the START state from current frame
       const startFrame = project.keyframes[currentFrameIndex];
       const startState = startFrame.objects[selectedObjectId];
       
-      // Get the END state from target frame
-      const endFrame = project.keyframes[targetFrameIndex];
-      const endState = endFrame.objects[selectedObjectId];
-      
-      if (!startState || !endState) {
-          alert('Object must exist in both start and end frames');
+      if (!startState) {
+          alert('Object not found in current frame');
           return;
       }
+      
+      // Calculate target frame index
+      const targetFrameIndex = currentFrameIndex + numFrames;
       
       setProject(prev => {
           const newKeyframes = [...prev.keyframes];
           
-          // Calculate number of frames to interpolate
-          const numFrames = targetFrameIndex - currentFrameIndex;
+          // Ensure we have enough frames - create new ones if needed
+          while (newKeyframes.length <= targetFrameIndex) {
+              const lastFrame = newKeyframes[newKeyframes.length - 1];
+              newKeyframes.push({
+                  id: `frame-${Date.now()}-${newKeyframes.length}`,
+                  index: newKeyframes.length,
+                  objects: JSON.parse(JSON.stringify(lastFrame.objects))
+              });
+          }
+          
+          // Create the complete end state (merge user input with current state)
+          const completeEndState = {
+              ...startState,
+              x: endState.x,
+              y: endState.y,
+              rotation: endState.rotation
+          };
+          
+          // Set the end frame
+          newKeyframes[targetFrameIndex] = {
+              ...newKeyframes[targetFrameIndex],
+              objects: {
+                  ...newKeyframes[targetFrameIndex].objects,
+                  [selectedObjectId]: completeEndState
+              }
+          };
           
           // Interpolate all frames in between (excluding start and end)
           for (let i = 1; i < numFrames; i++) {
@@ -311,14 +330,14 @@ const App: React.FC = () => {
                   objects: {
                       ...newKeyframes[frameIndex].objects,
                       [selectedObjectId]: {
-                          x: lerp(startState.x, endState.x, t),
-                          y: lerp(startState.y, endState.y, t),
-                          width: lerp(startState.width, endState.width, t),
-                          height: lerp(startState.height, endState.height, t),
-                          rotation: lerpAngle(startState.rotation, endState.rotation, t),
-                          opacity: lerp(startState.opacity, endState.opacity, t),
+                          x: lerp(startState.x, completeEndState.x, t),
+                          y: lerp(startState.y, completeEndState.y, t),
+                          width: lerp(startState.width, completeEndState.width, t),
+                          height: lerp(startState.height, completeEndState.height, t),
+                          rotation: lerpAngle(startState.rotation, completeEndState.rotation, t),
+                          opacity: lerp(startState.opacity, completeEndState.opacity, t),
                           zIndex: startState.zIndex,
-                          flipX: t < 0.5 ? startState.flipX : endState.flipX
+                          flipX: t < 0.5 ? startState.flipX : completeEndState.flipX
                       }
                   }
               };

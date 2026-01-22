@@ -12,7 +12,7 @@ interface TimelineProps {
   onDuplicateFrame: () => void;
   onDeleteFrame: () => void;
   isPlaying: boolean;
-  onAutoInterpolate: (targetFrameIndex: number) => void;
+  onAutoInterpolate: (numFrames: number, endState: { x: number; y: number; rotation: number }) => void;
   selectedObjectId: string | null;
 }
 
@@ -28,22 +28,19 @@ const Timeline: React.FC<TimelineProps> = ({
   selectedObjectId
 }) => {
   const [showTweenModal, setShowTweenModal] = React.useState(false);
-  const [tweenStartFrame, setTweenStartFrame] = React.useState(0);
+  const [numFrames, setNumFrames] = React.useState(10);
+  const [endX, setEndX] = React.useState(0);
+  const [endY, setEndY] = React.useState(0);
+  const [endRotation, setEndRotation] = React.useState(0);
 
   const handleStartTween = () => {
     if (!selectedObjectId) return;
-    // Capture the START frame
-    setTweenStartFrame(currentFrameIndex);
     setShowTweenModal(true);
   };
 
-  const handleSelectEndFrame = (targetIndex: number) => {
-    if (targetIndex <= tweenStartFrame) {
-      alert('Please select a frame after the start frame');
-      return;
-    }
-    // Execute the tween between start and target
-    onAutoInterpolate(targetIndex);
+  const handleCreateTween = () => {
+    // Pass the end state values to the parent
+    onAutoInterpolate(numFrames, { x: endX, y: endY, rotation: endRotation });
     setShowTweenModal(false);
   };
 
@@ -53,54 +50,86 @@ const Timeline: React.FC<TimelineProps> = ({
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden" id="timeline-panel">
-      {/* Tween Modal - Frame Selection Mode */}
+      {/* Tween Modal - Simple Motion Definition */}
       {showTweenModal && (
         <>
           <div className="fixed inset-0 bg-black/40 z-40" onClick={handleCancel}></div>
-          <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 w-96" onClick={(e) => e.stopPropagation()}>
+          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 w-96" onClick={(e) => e.stopPropagation()}>
             <div className="bg-white border-2 border-gray-900 p-5 shadow-2xl">
-              <h3 className="text-base font-normal mb-3" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween Setup</h3>
+              <h3 className="text-base font-normal mb-4" style={{ fontFamily: 'Georgia, serif' }}>Auto Tween Motion</h3>
               
-              <div className="bg-blue-50 border-2 border-blue-400 p-4 mb-4 text-xs space-y-2">
-                <p className="font-normal text-gray-800">
-                  <strong>Start Frame: {tweenStartFrame + 1}</strong> (current position saved)
-                </p>
+              <div className="bg-gray-50 border border-gray-300 p-3 mb-4 text-xs">
                 <p className="font-normal text-gray-700">
-                  Now click on a frame below to set as the END frame. All frames in between will be automatically filled.
+                  <strong>Start:</strong> Frame {currentFrameIndex + 1} (current position)
                 </p>
               </div>
-              
-              <div className="max-h-64 overflow-y-auto border-2 border-gray-300 p-2 mb-4 bg-gray-50">
-                <div className="space-y-1">
-                  {keyframes.map((frame, idx) => (
-                    <button
-                      key={frame.id}
-                      onClick={() => handleSelectEndFrame(idx)}
-                      disabled={idx <= tweenStartFrame}
-                      className={`
-                        w-full px-3 py-2 text-xs font-normal transition-colors text-left border-2
-                        ${idx === tweenStartFrame 
-                          ? 'bg-blue-100 border-blue-400 text-blue-900 cursor-not-allowed' 
-                          : idx < tweenStartFrame
-                          ? 'bg-gray-200 border-gray-300 text-gray-400 cursor-not-allowed'
-                          : 'bg-white border-gray-300 hover:bg-gray-100 hover:border-gray-900 text-gray-700'}
-                      `}
-                    >
-                      {idx === tweenStartFrame && '▶ '}
-                      Frame {idx + 1}
-                      {idx === tweenStartFrame && ' (START)'}
-                      {idx > tweenStartFrame && ` (+${idx - tweenStartFrame} frames)`}
-                    </button>
-                  ))}
+
+              <div className="space-y-3 mb-4">
+                <div>
+                  <label className="text-xs text-gray-600 font-normal block mb-1">Number of frames:</label>
+                  <input
+                    type="number"
+                    min="2"
+                    max="100"
+                    value={numFrames}
+                    onChange={(e) => setNumFrames(Math.max(2, parseInt(e.target.value) || 2))}
+                    className="w-full px-3 py-2 border-2 border-gray-300 text-center font-normal"
+                  />
+                  <p className="text-[10px] text-gray-500 mt-1">End frame will be: {currentFrameIndex + numFrames + 1}</p>
+                </div>
+
+                <div className="border-t border-gray-300 pt-3">
+                  <label className="text-xs text-gray-600 font-normal block mb-2">End Position:</label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <label className="text-[10px] text-gray-500 block mb-1">X:</label>
+                      <input
+                        type="number"
+                        value={endX}
+                        onChange={(e) => setEndX(Number(e.target.value))}
+                        className="w-full px-2 py-1 border-2 border-gray-300 text-xs font-normal"
+                        placeholder="X position"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-gray-500 block mb-1">Y:</label>
+                      <input
+                        type="number"
+                        value={endY}
+                        onChange={(e) => setEndY(Number(e.target.value))}
+                        className="w-full px-2 py-1 border-2 border-gray-300 text-xs font-normal"
+                        placeholder="Y position"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs text-gray-600 font-normal block mb-1">End Rotation (degrees):</label>
+                  <input
+                    type="number"
+                    value={endRotation}
+                    onChange={(e) => setEndRotation(Number(e.target.value))}
+                    className="w-full px-3 py-2 border-2 border-gray-300 text-center font-normal"
+                    placeholder="0"
+                  />
                 </div>
               </div>
               
-              <button
-                onClick={handleCancel}
-                className="w-full px-4 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-xs"
-              >
-                Cancel
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleCancel}
+                  className="flex-1 px-4 py-2 border-2 border-gray-300 hover:bg-gray-100 text-gray-700 font-normal text-xs"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCreateTween}
+                  className="flex-1 px-4 py-2 border-2 border-gray-900 bg-gray-900 hover:bg-gray-700 text-white font-normal text-xs"
+                >
+                  Create Tween
+                </button>
+              </div>
             </div>
           </div>
         </>
@@ -142,12 +171,11 @@ const Timeline: React.FC<TimelineProps> = ({
           {!selectedObjectId && !isPlaying && (
             <p className="text-[10px] text-gray-600 mt-2 text-center font-normal leading-relaxed">
               <strong>How to use:</strong><br/>
-              1. Select an object<br/>
+              1. Select object<br/>
               2. Position at START<br/>
-              3. Create/go to END frame<br/>
-              4. Position at END<br/>
-              5. Click Auto Tween<br/>
-              6. Select END frame
+              3. Click Auto Tween<br/>
+              4. Enter END position & frames<br/>
+              5. Done!
             </p>
           )}
         </div>
