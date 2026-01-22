@@ -15,7 +15,7 @@ const AnimatedLogo: React.FC<AnimatedLogoProps> = ({
       style={{ width: size, height: size }}
     >
       <img
-        src={`${import.meta.env.BASE_URL}logo-animated.gif`}
+        src={`${import.meta.env.BASE_URL}anilogo.gif`}
         alt="AnimaTeX Logo"
         className="w-full h-full object-contain"
         style={{ imageRendering: 'auto' }}
